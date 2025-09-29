@@ -20,7 +20,6 @@ class TelaEditarRestaurante extends StatelessWidget{
                     DropdownMenuItem(value: "Italiana", child: Text("Italiana")),
                     DropdownMenuItem(value: "Brasileira", child: Text("Brasileira")),
                     DropdownMenuItem(value: "Chinesa", child: Text("Chinesa")),
-                    DropdownMenuItem(value: "Francesa", child: Text("Francesa")),
                   ],
                 onChanged: (value){}),
               TextFormField(
