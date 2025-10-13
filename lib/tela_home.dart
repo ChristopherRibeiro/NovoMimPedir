@@ -1,43 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:mimpedir/tela_cad_restaurante.dart';
-import 'package:mimpedir/tela_editar_restaurante.dart';
+import '../restaurante.dart';
+import 'banco/restaurante_DAO.dart';
 
-class TelaHome extends StatelessWidget{
+class TelaHome extends StatefulWidget {
   TelaHome({super.key});
+
+  @override
+  State<TelaHome> createState() => TelaHomeState();
+}
+
+class TelaHomeState extends State<TelaHome>{
+  List<Restaurante> restaurantes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    carregarRestaurantes();
+  }
+
+  Future<void> carregarRestaurantes() async{
+    final lista = await RestauranteDAO.listarTodos();
+    setState(() {
+      restaurantes = lista;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tela Home')),
-      body: Padding(padding: const EdgeInsets.all(20),
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Lista de Restaurantes: "),
-            ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
-            }, child: Text("Cadastrar Restaurante")),
-            Text("Editar Informações: "),
-            ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
-            }, child: Text("Editar Restaurante")),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-              [
-                Column(
-                  children: [
-                    Text("Meu restaurante"),
-                    Text("Comida Mexicana")
-                  ],
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(onPressed: (){}, child: Text("Excluir")),
-                ElevatedButton(onPressed: (){}, child: Text("Editar")),
-              ],
-            ),
-          ],
+      appBar: AppBar(
+        title: const Text('Lista de Restaurantes'),
+        actions: [
+          IconButton(onPressed: () async{
+                final t = await Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => TelaCadRestaurante()));
+
+                if(t == false || t == null){
+                  setState(() {
+                    carregarRestaurantes();
+                  });
+
+                }
+
+              },
+              icon: Icon(Icons.add)
+          )
+        ],
       ),
+      body: Padding(padding: const EdgeInsets.all(10),
+        child: ListView.builder(
+            itemCount: restaurantes.length,
+            itemBuilder: (context, index) {
+              final r = restaurantes[index];
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                child: ListTile(
+                    title: Text(r.nomeRestaurante ?? 'sem nome'),
+                    subtitle: Text('ID: ${r.codigo}'),
+                    trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => TelaCadRestaurante()));
+                          }, icon: Icon(Icons.edit, color: Colors.indigo,)),
+                          IconButton(onPressed: () {},
+                              icon: Icon(Icons.delete, color: Colors.brown)),
+                        ]
+                    )
+                ),
+              );
+            }
+          ),
+        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+        },
+        child: Icon(Icons.add)
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const<BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Adicionar'),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Adicionar'),
+        ],
       ),
     );
   }

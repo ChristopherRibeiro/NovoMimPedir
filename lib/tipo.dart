@@ -9,8 +9,8 @@ class Tipo{
   int? get codigo => _codigo;
   String? get nome => _nome;
 
+  get descricao => null;
+
   set nome(String? nome) => _nome = nome;
   set codigo(int? codigo) => _codigo = codigo;
-
 }
-

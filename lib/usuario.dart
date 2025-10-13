@@ -1,37 +1,35 @@
+
 class Usuario{
-  //Atributos
   int? _codigo;
   String? _nome;
   String? _login;
   String? _senha;
-  //Para selecionar classe, privada use ( _ ) antes do nome do atributo
-  //Metodo construtor
-  Usuario({String? nome, int? codigo, String? login, String? senha}){
-   _senha = senha;
-   _codigo = codigo;
-   _nome = nome;
-   _login = login;
+
+  Usuario({String? nome, int? codigo, String? senha, String? login}){
+    _senha = senha;
+    _codigo = codigo;
+    _nome = nome;
+    _login = login;
   }
 
   //getters
   //escrita do get tradicional
-  String? getNome(){
-    return _nome;
+  String? get login{
+    return _login;
   }
-  //escrita do get no Dart
-  String? get login => _login;
+  //escrita do get no estilo dart
+  String? get nome => _nome;
   String? get senha => _senha;
   int? get codigo => _codigo;
 
   //setters
-
   //escrita do set tradicional
-  set nome(String? nome){
-    _nome = nome;
+  set login(String? login){
+    _login = login;
   }
 
-  //escrita do set no Dart
-  set login(String? login) => _login = login;
-  set codigo(int? codigo) => _codigo = codigo;
+  //escrita do set no estilo dart
+  set nome(String? nome) => _nome = nome;
   set senha(String? senha) => _senha = senha;
+  set codigo(int? codigo) => _codigo = codigo;
 }
