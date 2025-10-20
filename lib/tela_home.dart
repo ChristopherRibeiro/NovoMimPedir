@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mimpedir/tela_cad_restaurante.dart';
+import 'package:mimpedir/tela_editar_restaurante.dart';
 import '../restaurante.dart';
 import 'banco/restaurante_DAO.dart';
 
@@ -61,13 +62,39 @@ class TelaHomeState extends State<TelaHome>{
                     trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => TelaCadRestaurante()));
-                          }, icon: Icon(Icons.edit, color: Colors.indigo,)),
-                          IconButton(onPressed: () {},
-                              icon: Icon(Icons.delete, color: Colors.brown)),
-                        ]
+                          IconButton(
+                              icon: Icon(Icons.edit, color: Colors.blue),
+                              onPressed: () async{
+                                TelaEditarRestaurante.restaurante = await RestauranteDAO.listar(r.codigo);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+                          },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: Text('ATENÇÃo!'),
+                                  content: Text('Confirmar exclusão?'),
+                                  actions: [
+                                    TextButton(onPressed: (){
+                                        Navigator.pop(context);
+                                      },child: Text('cancelar')),
+                                    TextButton(onPressed: (){
+                                      RestauranteDAO.excluir(r);
+                                      setState(() {
+                                      carregarRestaurantes();
+                                      });
+                                      Navigator.pop(context);
+                                    },child: Text('sim'))
+                                  ],
+                                )
+                            );
+                          },
+
+                          ),
+                      ],
                     )
                 ),
               );

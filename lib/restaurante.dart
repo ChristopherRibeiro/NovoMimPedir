@@ -1,3 +1,5 @@
+import 'package:mimpedir/tipo.dart';
+
 import 'usuario.dart';
 
 
@@ -9,7 +11,7 @@ class Restaurante{
   Usuario? _proprietario;
   Type?  _tipodeCulinaria;
 
-  Restaurante({int? codigo, String? nomeRestaurante, latitude, longitude}){
+  Restaurante({int? codigo, String? nomeRestaurante, latitude, longitude, required Tipo culinaria}){
     _codigo = codigo;
     _nomeRestaurante = nomeRestaurante;
     _latitude = latitude;
@@ -38,5 +40,7 @@ class Restaurante{
   }
 
   int? get codigo => _codigo;
+
+  get culinaria => null;
   set codigo(int? value){ _codigo = value;}
 }
